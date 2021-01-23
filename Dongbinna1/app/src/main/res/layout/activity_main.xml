@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/number1"
+        android:layout_width="92dp"
+        android:layout_height="44dp"
+        android:hint="첫번째 숫자"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="101dp"
+        />
+
+    <TextView
+        android:id="@+id/number2"
+        android:layout_width="88dp"
+        android:layout_height="39dp"
+        android:hint="두번째 숫자"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="195dp"
+        />
+
+    <Button
+        android:id="@+id/addbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        tools:layout_editor_absoluteX="73dp"
+        tools:layout_editor_absoluteY="305dp"
+        />
+
+    <Button
+        android:id="@+id/subbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        tools:layout_editor_absoluteX="201dp"
+        tools:layout_editor_absoluteY="305dp"
+        />
+
+    <Button
+        android:id="@+id/mulbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        tools:layout_editor_absoluteX="197dp"
+        tools:layout_editor_absoluteY="403dp"
+        />
+
+    <Button
+        android:id="@+id/divbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        tools:layout_editor_absoluteX="76dp"
+        tools:layout_editor_absoluteY="403dp"
+        />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="242dp"
+        android:layout_height="41dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        tools:layout_editor_absoluteX="72dp"
+        tools:layout_editor_absoluteY="539dp"
+        />
+
+
+</LinearLayout>
