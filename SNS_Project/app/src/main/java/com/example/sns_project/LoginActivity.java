@@ -2,7 +2,6 @@ package com.example.sns_project;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Process;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,7 +15,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignUpActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final String TAG = "SignUpActivity";
@@ -25,10 +24,10 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_login);
 
         findViewById(R.id.loginButton).setOnClickListener(onClickListener);
-        findViewById(R.id.gotoLoginButton).setOnClickListener(onClickListener);
+        findViewById(R.id.signUpButton).setOnClickListener(onClickListener);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
     }
@@ -41,6 +40,14 @@ public class SignUpActivity extends AppCompatActivity {
 //        updateUI(currentUser);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
+    }
+
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -48,11 +55,9 @@ public class SignUpActivity extends AppCompatActivity {
                 case R.id.loginButton:
                     signUp();
                     break;
-                case R.id.gotoLoginButton:
-                    startLoginActivity();
+                case R.id.signUpButton:
+                    startSignupActivity();
                     break;
-
-
             }
         }
     };
@@ -61,31 +66,25 @@ public class SignUpActivity extends AppCompatActivity {
 
         String email = ((EditText)findViewById(R.id.emailEditText)).getText().toString();
         String password = ((EditText)findViewById(R.id.passwordEditText)).getText().toString();
-        String passwordCheck = ((EditText)findViewById(R.id.passwordCheckEditText)).getText().toString();
 
 
-        if (email.length() > 0 && password.length() > 0 && passwordCheck.length() > 0) {
-            if (password.equals(passwordCheck)) {
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    startToast("회원가입이 완료되었습니다.");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    // 성공했을때 UI
-                                } else { // 실패했을때 UI
-                                    if (task.getException() != null) {
-                                        startToast(task.getException().toString());
-                                    }
+        if (email.length() > 0 && password.length() > 0) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                startToast("환영합니다.");
+                                startMainActivity();
+                            } else {
+                                if (task.getException() != null) {
+                                    startToast(task.getException().toString());
                                 }
-
-                                // ...
                             }
-                        });
-            } else {
-                startToast("비밀번호가 일치하지 않습니다.");
-            }
+
+                        }
+                    });
         }else{
             startToast("이메일과 비밀번호를 모두 입력해주세요.");
         }
@@ -94,11 +93,13 @@ public class SignUpActivity extends AppCompatActivity {
     private void startToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-    private void startLoginActivity(){
-        Intent intent = new Intent(this, LoginActivity.class);
+    private void startSignupActivity(){
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
+    }
+    private void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
-
-
 }
