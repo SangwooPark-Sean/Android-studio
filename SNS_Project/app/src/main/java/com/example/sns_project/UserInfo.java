@@ -7,12 +7,14 @@ public class UserInfo {
     private String phoneNumber;
     private String birthDate;
     private String address;
+    private String phoroUrl;
 
-    public UserInfo(String name, String phoneNumber, String birthDate, String address){
+    public UserInfo(String name, String phoneNumber, String birthDate, String address, String phoroUrl){
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.address = address;
+        this.phoroUrl = phoroUrl;
     }
 
     public String getName(){
@@ -41,6 +43,13 @@ public class UserInfo {
     }
     public void setaddress(String address){
         this.address = address;
+    }
+
+    public String getphoroUrl(){
+        return this.phoroUrl;
+    }
+    public void setphoroUrl(String phoroUrl){
+        this.phoroUrl = phoroUrl;
     }
 
 
