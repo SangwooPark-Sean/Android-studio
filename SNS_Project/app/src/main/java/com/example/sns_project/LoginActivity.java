@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private static final String TAG = "SignUpActivity";
 
 
     @Override
@@ -28,17 +27,18 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.loginButton).setOnClickListener(onClickListener);
         findViewById(R.id.signUpButton).setOnClickListener(onClickListener);
+        findViewById(R.id.gotoPasswordResetButton).setOnClickListener(onClickListener);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+////        updateUI(currentUser);
+//    }
 
     @Override
     public void onBackPressed() {
@@ -53,16 +53,19 @@ public class LoginActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.loginButton:
-                    signUp();
+                    login();
                     break;
                 case R.id.signUpButton:
-                    startSignupActivity();
+                    startActivity(SignUpActivity.class);
+                    break;
+                case R.id.gotoPasswordResetButton:
+                    startActivity(PasswordResetActivity.class);
                     break;
             }
         }
     };
 
-    private void signUp(){
+    private void login(){
 
         String email = ((EditText)findViewById(R.id.emailEditText)).getText().toString();
         String password = ((EditText)findViewById(R.id.passwordEditText)).getText().toString();
@@ -93,8 +96,8 @@ public class LoginActivity extends AppCompatActivity {
     private void startToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-    private void startSignupActivity(){
-        Intent intent = new Intent(this, SignUpActivity.class);
+    private void startActivity(Class cls){
+        Intent intent = new Intent(this, cls);
         startActivity(intent);
     }
     private void startMainActivity(){

@@ -2,7 +2,6 @@ package com.example.sns_project;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Process;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,8 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private static final String TAG = "SignUpActivity";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +30,13 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+////        updateUI(currentUser);
+//    }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -73,6 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     startToast("회원가입이 완료되었습니다.");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    startLoginActivity();
                                     // 성공했을때 UI
                                 } else { // 실패했을때 UI
                                     if (task.getException() != null) {
