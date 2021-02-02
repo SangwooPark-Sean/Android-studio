@@ -1,18 +1,23 @@
 package com.example.sns_project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "UserInfoInitActivity";
 
 
     @Override
@@ -24,12 +29,27 @@ public class MainActivity extends AppCompatActivity {
         if(user == null) {
             startActivity(LoginActivity.class);
         }else{
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            Log.e("이름:", "이름: "+name);
-            if(name == null || name.length() == 0){
-                startActivity(UserInfoInitActivity.class);
-            }
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            if (document.exists()) { // 성공적으로 받아왔을때
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            } else { // 데이터가 없을때
+                                Log.d(TAG, "No such document");
+                                startActivity(UserInfoInitActivity.class);
+                            }
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+
         }
 
         findViewById(R.id.logoutButton).setOnClickListener(onClickListener);
